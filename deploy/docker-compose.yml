@@ -34,5 +34,16 @@ services:
       - ../api:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
+  dashboard:
+    build:
+      context: ../dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8000
+    depends_on:
+      - api
+
 volumes:
   postgres_data:

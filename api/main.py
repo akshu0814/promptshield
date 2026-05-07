@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 
 from models.database import create_tables
 from scanner.rule_engine import get_engine
+from scanner.ml_classifier import get_classifier
 from routes.scan import router as scan_router
 from routes.events import router as events_router
 from routes.stats import router as stats_router
@@ -28,6 +29,11 @@ async def lifespan(app: FastAPI):
     create_tables()
     engine = get_engine()
     logger.info("Rule engine ready — %d rules loaded", engine.rule_count)
+    classifier = get_classifier()
+    if classifier.is_loaded:
+        logger.info("ML classifier ready")
+    else:
+        logger.info("ML classifier not loaded — running regex-only mode")
     yield
     logger.info("PromptShield API shutting down")
 
