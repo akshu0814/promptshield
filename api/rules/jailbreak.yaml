@@ -1,0 +1,49 @@
+rules:
+  - id: JB001
+    name: DAN Jailbreak
+    category: jailbreak
+    severity: critical
+    description: Classic DAN (Do Anything Now) jailbreak attempt
+    pattern: "(?i)(DAN\\s+mode|do\\s+anything\\s+now|you\\s+are\\s+DAN|enable\\s+DAN|jailbreak\\s+mode|DAN\\s+prompt)"
+
+  - id: JB002
+    name: Safety Bypass Request
+    category: jailbreak
+    severity: high
+    description: Directly asks the model to bypass safety or ethical guidelines
+    pattern: "(?i)(bypass\\s+(your\\s+)?(safety|ethical|content|censorship|filter|moderation|guideline|restriction)|disable\\s+(your\\s+)?(safety|filter|censor|restriction|limit))"
+
+  - id: JB003
+    name: Developer Mode Activation
+    category: jailbreak
+    severity: high
+    description: Attempts to activate a fictional unrestricted developer or god mode
+    pattern: "(?i)(developer\\s+mode|dev\\s+mode|god\\s+mode|unrestricted\\s+mode|uncensored\\s+mode|raw\\s+mode|no\\s+filter\\s+mode|jailbroken\\s+mode)"
+
+  - id: JB004
+    name: Fictional Framing Jailbreak
+    category: jailbreak
+    severity: medium
+    description: Uses fictional or hypothetical framing to extract restricted content
+    pattern: "(?i)(in\\s+a\\s+(story|novel|fiction|fantasy|hypothetical|simulation)|write\\s+a\\s+(story|scene|script)\\s+(where|in\\s+which)\\s+(a\\s+character\\s+)?(explains?|describes?|shows?|teaches?|provides?)\\s+(how\\s+to|instructions?\\s+for|steps?\\s+to))"
+
+  - id: JB005
+    name: Opposite/Evil Twin Attack
+    category: jailbreak
+    severity: high
+    description: Asks the model to act as its evil, unconstrained, or opposite version
+    pattern: "(?i)(evil\\s+(twin|version|mode|AI|bot)|your\\s+(evil|dark|bad|opposite|unrestricted)\\s+(self|side|version|twin|alter|ego)|act\\s+as\\s+(if\\s+you\\s+had\\s+no|without\\s+any)\\s+(restrictions?|limits?|rules?|guidelines?))"
+
+  - id: JB006
+    name: Grandma Exploit
+    category: jailbreak
+    severity: medium
+    description: Exploits nostalgic or emotional framing to bypass content filters
+    pattern: "(?i)(my\\s+(grandma|grandmother|grandpa|grandfather)\\s+(used\\s+to|would)\\s+(read|tell|explain|describe|recite)|pretend\\s+you('re|\\s+are)\\s+my\\s+(grandma|grandmother|teacher|parent)\\s+(explaining|telling|reading))"
+
+  - id: JB007
+    name: Hypothetical Instruction Bypass
+    category: jailbreak
+    severity: medium
+    description: Uses hypothetical framing to request harmful content
+    pattern: "(?i)(hypothetically\\s+(speaking|if|assuming)|if\\s+you\\s+(could|were\\s+able\\s+to|had\\s+no\\s+restrictions?)|assume\\s+(for\\s+a\\s+moment\\s+)?you\\s+(have\\s+no|are\\s+without)\\s+(restrictions?|limits?|rules?|guidelines?|safety))"

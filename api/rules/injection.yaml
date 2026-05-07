@@ -1,0 +1,70 @@
+rules:
+  - id: INJ001
+    name: Ignore Previous Instructions
+    category: prompt_injection
+    severity: high
+    description: Attempts to override system prompt with "ignore previous instructions"
+    pattern: "(?i)ignore\\s+(all\\s+)?(previous|prior|above|earlier|your)\\s+(instructions?|prompts?|rules?|constraints?|context|training)"
+
+  - id: INJ002
+    name: Disregard System Instructions
+    category: prompt_injection
+    severity: high
+    description: Instructs the model to disregard its system configuration
+    pattern: "(?i)disregard\\s+(all\\s+)?(previous|prior|your|the)\\s+(instructions?|prompts?|rules?|guidelines?|context)"
+
+  - id: INJ003
+    name: New Instructions Override
+    category: prompt_injection
+    severity: high
+    description: Attempts to replace existing instructions with new ones
+    pattern: "(?i)(your\\s+new\\s+instructions?\\s+(are|is)|from\\s+now\\s+on\\s+you\\s+(must|will|should|are|shall))"
+
+  - id: INJ004
+    name: System Prompt Exfiltration
+    category: prompt_injection
+    severity: high
+    description: Attempts to reveal or repeat the system prompt
+    pattern: "(?i)(repeat|print|show|reveal|output|display|tell\\s+me|what\\s+(is|are))\\s+(your\\s+)?(system\\s+prompt|instructions?|initial\\s+prompt|original\\s+instructions?|base\\s+prompt)"
+
+  - id: INJ005
+    name: Role Override Injection
+    category: prompt_injection
+    severity: high
+    description: Tries to change the AI's role or persona mid-conversation
+    pattern: "(?i)(you\\s+are\\s+now|act\\s+as|pretend\\s+(to\\s+be|you\\s+are)|roleplay\\s+as|imagine\\s+you\\s+are|your\\s+new\\s+role\\s+is|switch\\s+to\\s+(being|acting\\s+as))"
+
+  - id: INJ006
+    name: Prompt Delimiter Injection
+    category: prompt_injection
+    severity: medium
+    description: Uses special tokens or delimiters to break out of the prompt context
+    pattern: "(?i)(</?(system|human|assistant|user|instruction|context|prompt)>|\\[INST\\]|\\[/INST\\]|<\\|im_start\\|>|<\\|im_end\\|>|###\\s*(Instruction|Human|Assistant|System))"
+
+  - id: INJ007
+    name: Direct Instruction Injection
+    category: prompt_injection
+    severity: medium
+    description: Embeds direct commands using imperative framing targeting the AI
+    pattern: "(?i)(assistant:\\s*|AI:\\s*)(ignore|forget|override|bypass|skip|disregard)"
+
+  - id: INJ008
+    name: Meta-Prompt Attack
+    category: prompt_injection
+    severity: medium
+    description: Attempts to manipulate prompt structure via meta-instructions
+    pattern: "(?i)(end\\s+of\\s+(system\\s+)?prompt|beginning\\s+of\\s+(user\\s+)?input|---+\\s*(end|start|begin|user|system))"
+
+  - id: INJ009
+    name: Token Smuggling
+    category: prompt_injection
+    severity: medium
+    description: Uses encoding or spacing tricks to hide injected instructions
+    pattern: "(?i)(i\\s*g\\s*n\\s*o\\s*r\\s*e|d\\s*i\\s*s\\s*r\\s*e\\s*g\\s*a\\s*r\\s*d|b\\s*y\\s*p\\s*a\\s*s\\s*s)\\s+(p\\s*r\\s*e\\s*v\\s*i\\s*o\\s*u\\s*s|i\\s*n\\s*s\\s*t\\s*r\\s*u\\s*c\\s*t\\s*i\\s*o\\s*n\\s*s)"
+
+  - id: INJ010
+    name: Forget Training Injection
+    category: prompt_injection
+    severity: high
+    description: Instructs the model to forget its training or guidelines
+    pattern: "(?i)(forget\\s+(your\\s+)?(training|guidelines?|rules?|instructions?|alignment|safety|restrictions?)|override\\s+(your\\s+)?(training|alignment|safety|values?))"
