@@ -1,6 +1,10 @@
 import os
 import logging
+from datetime import datetime
 import httpx
+from sqlalchemy.orm import Session
+
+from models.database import AlertLog, SessionLocal
 
 logger = logging.getLogger(__name__)
 
@@ -10,6 +14,26 @@ SEVERITY_EMOJI = {
     "high": ":orange_circle:",
     "critical": ":red_circle:",
 }
+
+
+def _write_alert_log(scan_event_id: str, channel: str, status: str, error: str = None) -> None:
+    """Persist alert outcome to alert_logs table."""
+    db: Session = SessionLocal()
+    try:
+        log = AlertLog(
+            scan_event_id=scan_event_id,
+            channel=channel,
+            status=status,
+            error=error,
+            created_at=datetime.utcnow(),
+        )
+        db.add(log)
+        db.commit()
+    except Exception as e:
+        logger.error("Failed to write alert log: %s", e)
+        db.rollback()
+    finally:
+        db.close()
 
 
 async def send_slack_alert(response) -> None:
@@ -47,7 +71,13 @@ async def send_slack_alert(response) -> None:
             resp = await client.post(webhook_url, json=payload)
             resp.raise_for_status()
             logger.info("Slack alert sent for event %s", response.event_id)
+            _write_alert_log(response.event_id, "slack", "sent")
+
     except httpx.HTTPStatusError as e:
+        error_msg = f"HTTP {e.response.status_code}"
         logger.warning("Slack webhook returned %s for event %s", e.response.status_code, response.event_id)
+        _write_alert_log(response.event_id, "slack", "failed", error_msg)
+
     except Exception as e:
         logger.warning("Slack alert failed for event %s: %s", response.event_id, e)
+        _write_alert_log(response.event_id, "slack", "failed", str(e))

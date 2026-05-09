@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from models.database import create_tables
 from scanner.rule_engine import get_engine
 from scanner.ml_classifier import get_classifier
+from middleware.rate_limiter import rate_limit_middleware
 from routes.scan import router as scan_router
 from routes.events import router as events_router
 from routes.stats import router as stats_router
@@ -51,6 +52,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def rate_limiter(request: Request, call_next):
+    return await rate_limit_middleware(request, call_next)
 
 
 @app.middleware("http")

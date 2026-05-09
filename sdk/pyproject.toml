@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "promptshield"
+version = "0.1.0"
+description = "Open-source LLM prompt injection defense — protect any AI app in 2 lines of Python"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Akshu Patel", email = "akshu0814@gmail.com" }]
+keywords = ["llm", "security", "prompt-injection", "ai", "openai", "langchain"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.9"
+dependencies = ["httpx>=0.24.0"]
+
+[project.urls]
+Homepage = "https://github.com/akshu0814/promptshield"
+Repository = "https://github.com/akshu0814/promptshield"
+Issues = "https://github.com/akshu0814/promptshield/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["promptshield*"]

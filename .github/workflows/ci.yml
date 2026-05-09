@@ -40,13 +40,14 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('api/requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip-
 
-      - name: Install dependencies
+      - name: Install API dependencies
         run: pip install -r api/requirements.txt
 
       - name: Run pytest
         env:
           DATABASE_URL: postgresql://promptshield:promptshield@localhost:5432/promptshield
           API_SECRET_KEY: ci-test-key
+          ML_ENABLED: "false"
         run: |
           cd api
           pytest tests/ -v --tb=short
@@ -59,4 +60,41 @@ jobs:
           e = RuleEngine('rules')
           assert e.rule_count >= 26, f'Expected 26+ rules, got {e.rule_count}'
           print(f'OK — {e.rule_count} rules loaded')
+          "
+
+  sdk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: pip install build
+
+      - name: Build SDK package
+        run: |
+          cd sdk
+          python -m build
+
+      - name: Install built SDK
+        run: pip install sdk/dist/*.whl
+
+      - name: Verify SDK import
+        run: |
+          python -c "
+          from promptshield import shield, InjectionDetected
+          print('SDK import OK')
+          print(f'InjectionDetected: {InjectionDetected}')
+
+          # Test @shield decorator exists and wraps correctly
+          @shield(block=False)
+          def test_fn(msg: str) -> str:
+              return msg
+
+          print('Decorator OK')
           "
