@@ -61,3 +61,36 @@ class RuleOut(BaseModel):
     enabled: bool
 
     model_config = {"from_attributes": True}
+
+
+class TimeseriesBucket(BaseModel):
+    timestamp: str
+    total: int
+    blocked: int
+    allowed: int
+
+
+class TimeseriesResponse(BaseModel):
+    hours: int
+    buckets: list[TimeseriesBucket]
+
+
+class BreakdownResponse(BaseModel):
+    by_category: dict[str, int]
+    by_severity: dict[str, int]
+    total_blocked: int
+
+
+class AppCreate(BaseModel):
+    name: str = Field(..., min_length=1, max_length=200, description="Human-readable app name")
+    block_mode: bool = Field(default=True, description="Block injections or just alert")
+
+
+class AppOut(BaseModel):
+    app_id: str
+    name: str
+    api_key: str
+    block_mode: bool
+    created_at: datetime
+
+    model_config = {"from_attributes": True}

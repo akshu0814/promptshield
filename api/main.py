@@ -14,6 +14,8 @@ from routes.scan import router as scan_router
 from routes.events import router as events_router
 from routes.stats import router as stats_router
 from routes.rules import router as rules_router
+from routes.analytics import router as analytics_router
+from routes.apps import router as apps_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -90,3 +92,5 @@ app.include_router(scan_router, tags=["Scanning"])
 app.include_router(events_router, tags=["Events"])
 app.include_router(stats_router, tags=["Stats"])
 app.include_router(rules_router, tags=["Rules"])
+app.include_router(analytics_router, tags=["Analytics"])
+app.include_router(apps_router, tags=["Apps"])
