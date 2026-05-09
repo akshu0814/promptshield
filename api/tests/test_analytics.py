@@ -6,9 +6,10 @@ import os
 import sys
 from pathlib import Path
 
-# Must set DATABASE_URL before any app imports — database.py creates the engine at module level
+# Must set these before any app imports — both are read at module level
 TEST_DB_URL = "sqlite:///./test_analytics.db"
 os.environ["DATABASE_URL"] = TEST_DB_URL
+os.environ["API_SECRET_KEY"] = ""  # disable auth in tests
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
