@@ -294,6 +294,52 @@ body {
 .rule-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
 .rule-description { font-size: 12px; color: var(--text-muted); }
 
+.rules-header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.rule-disabled { opacity: 0.45; }
+
+.rule-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+
+.rule-source-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+.btn-toggle {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.toggle-on  { background: #14532d33; color: #22c55e; border-color: #166534; }
+.toggle-off { background: #1c1c1c; color: var(--text-muted); border-color: var(--border); }
+
+.rule-create-form {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(59,130,246,0.04);
+}
+
+.rule-form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.rule-form-row .app-input { flex: 1; min-width: 140px; }
+
+.rule-form-error {
+  font-size: 12px;
+  color: var(--red);
+  padding: 4px 0;
+}
+
 /* ── Charts ── */
 .chart-container {
   background: var(--surface);

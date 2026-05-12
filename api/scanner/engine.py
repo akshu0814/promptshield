@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from scanner.rule_engine import get_engine, RuleMatch
 from scanner.ml_classifier import get_classifier, MLMatch
+from scanner.custom_rules import scan_custom, CustomRuleMatch
 from models.database import ScanEvent
 from models.schemas import ScanRequest, ScanResponse, MatchedRule
 
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 HIGH_SEVERITY_LEVELS = {"high", "critical"}
 
 # Union type — a match can come from regex or ML
-AnyMatch = Union[RuleMatch, MLMatch]
+AnyMatch = Union[RuleMatch, MLMatch, CustomRuleMatch]
 
 
 def _build_response(
@@ -69,6 +70,18 @@ def run_scan(request: ScanRequest, db: Session) -> ScanResponse:
             confidence = 1.0
     except Exception as e:
         logger.error("Regex engine error during scan %s: %s", event_id, e)
+
+    # ── Layer 1.5: Custom DB rules (in-memory, <1ms) ─────────────────────────
+    if verdict == "ALLOW":
+        try:
+            custom_match = scan_custom(request.prompt)
+            if custom_match:
+                match = custom_match
+                verdict = "BLOCK"
+                confidence = 1.0
+                layer_used = "custom"
+        except Exception as e:
+            logger.error("Custom rules error during scan %s: %s", event_id, e)
 
     # ── Layer 2: ML classifier (only runs if regex said ALLOW) ────────────────
     if verdict == "ALLOW":

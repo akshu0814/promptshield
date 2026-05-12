@@ -6,9 +6,10 @@ from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from models.database import create_tables
+from models.database import create_tables, SessionLocal
 from scanner.rule_engine import get_engine
 from scanner.ml_classifier import get_classifier
+from scanner.custom_rules import reload_from_db as reload_custom_rules
 from middleware.rate_limiter import rate_limit_middleware
 from routes.scan import router as scan_router
 from routes.events import router as events_router
@@ -37,6 +38,11 @@ async def lifespan(app: FastAPI):
         logger.info("ML classifier ready")
     else:
         logger.info("ML classifier not loaded — running regex-only mode")
+    db = SessionLocal()
+    try:
+        reload_custom_rules(db)
+    finally:
+        db.close()
     yield
     logger.info("PromptShield API shutting down")
 

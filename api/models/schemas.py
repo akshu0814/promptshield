@@ -59,8 +59,21 @@ class RuleOut(BaseModel):
     severity: str
     description: Optional[str]
     enabled: bool
+    source: str = "yaml"
 
     model_config = {"from_attributes": True}
+
+
+class RuleCreate(BaseModel):
+    name: str = Field(..., min_length=1, max_length=200)
+    category: str = Field(..., description="prompt_injection | jailbreak | extraction | pii_exfiltration")
+    severity: str = Field(..., description="low | medium | high | critical")
+    pattern: str = Field(..., min_length=1, description="Python regex pattern (case-insensitive)")
+    description: Optional[str] = Field(None, max_length=500)
+
+
+class RulePatch(BaseModel):
+    enabled: bool
 
 
 class TimeseriesBucket(BaseModel):

@@ -42,6 +42,7 @@ class Rule(Base):
     pattern = Column(Text, nullable=False)
     description = Column(Text, nullable=True)
     enabled = Column(Boolean, default=True)
+    source = Column(String(20), nullable=False, default="custom")  # "yaml" | "custom"
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
