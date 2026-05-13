@@ -2,6 +2,7 @@ services:
   - type: web
     name: promptshield-api
     runtime: python
+    plan: free
     rootDir: api
     buildCommand: pip install -r requirements-prod.txt
     startCommand: alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port $PORT
@@ -16,7 +17,7 @@ services:
         value: "false"
       - key: SLACK_WEBHOOK_URL
         value: ""
-
+ 
 databases:
   - name: promptshield-db
     databaseName: promptshield
