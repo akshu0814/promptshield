@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: promptshield-api
+    name: promptshield
     runtime: python
     plan: free
     rootDir: api
