@@ -10,6 +10,13 @@
 
 Prompt injection is [OWASP #1 LLM vulnerability](https://owasp.org/www-project-top-10-for-large-language-model-applications/). PromptShield scans every user message before it reaches your LLM using a two-layer detection system: a regex rule engine (&lt;1ms) backed by a HuggingFace ML classifier.
 
+## Live Demo
+
+| Service | URL |
+|---|---|
+| API (Swagger UI) | https://promptshield-l39o.onrender.com/docs |
+| Dashboard | https://promptshield-website.vercel.app |
+
 ---
 
 ## Quick start
